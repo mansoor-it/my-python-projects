@@ -1,0 +1,11 @@
+ecommerce/
+│
+├── app.py                 # الملف الرئيسي لتطبيق Flask
+├── templates/             # مجلد يحتوي على القوالب HTML
+│   ├── add_product.html   # صفحة إضافة المنتج
+│   ├── index.html         # الصفحة الرئيسية
+│   ├── products.html      # صفحة عرض المنتجات
+│   ├── cart.html          # صفحة عرض السلة
+│   └── orders.html        # صفحة عرض الطلبات
+└── static/                # مجلد يحتوي على ملفات CSS وJS
+    └── style.css          # ملف CSS لتنسيق الموقع

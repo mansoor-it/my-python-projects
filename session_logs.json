@@ -1,0 +1,107 @@
+[
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:32:41.977373",
+        "session_duration": 262.51075,
+        "session_count": 0,
+        "timestamp": "2025-04-20 21:37:04"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:37:10.737207",
+        "session_duration": 106.176329,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:38:56"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:39:04.473626",
+        "session_duration": 75.778753,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:40:20"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:40:26.166038",
+        "session_duration": 56.96444,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:41:23"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:41:23.147046",
+        "session_duration": 523.644561,
+        "session_count": 2,
+        "timestamp": "2025-04-20 21:50:06"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:50:12.533487",
+        "session_duration": 122.707204,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:52:15"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:52:20.715045",
+        "session_duration": 94.70558,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:53:55"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:55:33.381431",
+        "session_duration": 97.151529,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:57:10"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:57:17.565552",
+        "session_duration": 56.94203,
+        "session_count": 1,
+        "timestamp": "2025-04-20 21:58:14"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-20T21:58:43.256241",
+        "session_duration": 130.657378,
+        "session_count": 2,
+        "timestamp": "2025-04-20 22:00:53"
+    },
+    {
+        "username": "mansoor",
+        "session_start": "2025-04-20T22:04:32.850413",
+        "session_duration": 60.310717,
+        "session_count": 1,
+        "timestamp": "2025-04-20 22:05:33"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-21T10:41:16.564796",
+        "session_duration": 113.974773,
+        "session_count": 1,
+        "timestamp": "2025-04-21 10:43:10"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-04-21T10:43:16.090680",
+        "session_duration": 52.841644,
+        "session_count": 1,
+        "timestamp": "2025-04-21 10:44:08"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-05-24T11:35:59.010076",
+        "session_duration": 70.857708,
+        "session_count": 1,
+        "timestamp": "2025-05-24 11:37:09"
+    },
+    {
+        "username": "m",
+        "session_start": "2025-05-24T11:37:22.179251",
+        "session_duration": 51.959613,
+        "session_count": 1,
+        "timestamp": "2025-05-24 11:38:14"
+    }
+]
