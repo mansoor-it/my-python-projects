@@ -1,0 +1,72 @@
+/* ملف CSS لصفحة البحث - لحل مشاكل الـ linter */
+
+/* تنسيق الصور مع معالجة الأخطاء */
+.product-image,
+.store-image {
+    transition: transform 0.4s ease;
+}
+
+.product-image:hover,
+.store-image:hover {
+    transform: scale(1.05);
+}
+
+/* تنسيق الصور الافتراضية */
+.product-image[data-fallback] {
+    background-image: url('../images/default_product.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.store-image[data-fallback] {
+    background-image: url('../images/default_store.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* تنسيق شريط التقدم */
+.progress-cell {
+    width: 200px;
+}
+
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* ألوان أشرطة التقدم */
+.progress-fill-category {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.progress-fill-pending {
+    background: #f39c12;
+}
+
+.progress-fill-completed {
+    background: #27ae60;
+}
+
+.progress-fill-cancelled {
+    background: #e74c3c;
+}
+
+.progress-fill-admin {
+    background: #3498db;
+}
+
+.progress-fill-store {
+    background: #e74c3c;
+}
+
+.progress-fill-customer {
+    background: #f39c12;
+} 

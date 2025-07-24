@@ -1,0 +1,394 @@
+{% extends "shared/base.html" %}
+
+{% block title %}تسجيل دخول المشرف{% endblock %}
+
+{% block styles %}
+<style>
+    .admin-login-hero {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .admin-login-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="admin-grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.05"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.05"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23admin-grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .admin-login-container {
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        width: 100%;
+        max-width: 500px;
+        position: relative;
+        z-index: 2;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .admin-login-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        padding: 3rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .admin-login-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="header-grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23header-grain)"/></svg>');
+        opacity: 0.2;
+    }
+
+    .admin-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        z-index: 2;
+    }
+
+    .admin-icon i {
+        font-size: 2.5rem;
+        color: white;
+    }
+
+    .admin-title {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .admin-subtitle {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .admin-login-form {
+        padding: 3rem 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #2c3e50;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+    }
+
+    .form-control::placeholder {
+        color: #95a5a6;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #95a5a6;
+        z-index: 3;
+    }
+
+    .input-with-icon {
+        padding-left: 3rem;
+    }
+
+    .btn-admin-login {
+        width: 100%;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        border: none;
+        padding: 1.2rem;
+        border-radius: 15px;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-admin-login::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-admin-login:hover::before {
+        left: 100%;
+    }
+
+    .btn-admin-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(44, 62, 80, 0.4);
+    }
+
+    .btn-admin-login:active {
+        transform: translateY(0);
+    }
+
+    .admin-footer {
+        text-align: center;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .admin-footer a {
+        color: #2c3e50;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .admin-footer a:hover {
+        color: #34495e;
+        text-decoration: none;
+    }
+
+    .floating-shapes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .shape {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        animation: float-admin-shape 10s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) {
+        width: 60px;
+        height: 60px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+        width: 100px;
+        height: 100px;
+        top: 60%;
+        right: 10%;
+        animation-delay: 3s;
+    }
+
+    .shape:nth-child(3) {
+        width: 40px;
+        height: 40px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 6s;
+    }
+
+    @keyframes float-admin-shape {
+        0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.5; }
+        50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+    }
+
+    .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        border: none;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .admin-login-container {
+            margin: 1rem;
+            max-width: none;
+        }
+
+        .admin-login-header {
+            padding: 2rem 1.5rem;
+        }
+
+        .admin-login-form {
+            padding: 2rem 1.5rem;
+        }
+
+        .admin-title {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-login-hero">
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <div class="admin-login-container">
+        <div class="admin-login-header">
+            <div class="admin-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h1 class="admin-title">لوحة تحكم المشرف</h1>
+            <p class="admin-subtitle">تسجيل دخول المشرفين</p>
+                </div>
+        
+        <div class="admin-login-form">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'danger' else 'success' }}">
+                            <i class="fas fa-{{ 'exclamation-triangle' if category == 'danger' else 'check-circle' }} me-2"></i>
+                            {{ message }}
+                        </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST">
+                <div class="form-group">
+                            <label for="email" class="form-label">البريد الإلكتروني</label>
+                            <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               class="form-control input-with-icon" 
+                               placeholder="أدخل بريدك الإلكتروني"
+                               required>
+                            </div>
+                        </div>
+                
+                <div class="form-group">
+                            <label for="password" class="form-label">كلمة المرور</label>
+                            <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" 
+                               id="password" 
+                               name="password" 
+                               class="form-control input-with-icon" 
+                               placeholder="أدخل كلمة المرور"
+                               required>
+                            </div>
+                        </div>
+                
+                <button type="submit" class="btn-admin-login">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                تسجيل الدخول
+                            </button>
+                    </form>
+                </div>
+        
+        <div class="admin-footer">
+            <p>ليس لديك حساب مشرف؟ 
+                <a href="{{ url_for('admin_setup') }}">إنشاء حساب مشرف</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // إضافة تأثيرات تفاعلية للنموذج
+    const inputs = document.querySelectorAll('.form-control');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+    
+    // إضافة تأثير النقر على الزر
+    const loginBtn = document.querySelector('.btn-admin-login');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function(e) {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    }
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,234 @@
+{% extends "admin/base.html" %}
+
+{% block title %}تعديل المتجر - لوحة تحكم المشرف{% endblock %}
+
+{% block styles %}
+<style>
+    body, .edit-store-container {
+        background: #f8f9fa !important;
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+    .edit-store-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        overflow: hidden;
+        border: none;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 2rem 2rem 1.5rem 2rem;
+    }
+    .edit-store-header {
+        background: none;
+        color: #2c3e50;
+        padding: 0 0 1.5rem 0;
+        text-align: center;
+        border-radius: 0;
+    }
+    .edit-store-header h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+    }
+    .edit-store-header p {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+        margin-bottom: 0;
+    }
+    .edit-store-body {
+        padding: 3rem 2.5rem 2.5rem 2.5rem;
+    }
+    .form-section {
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1.5px solid #e9ecef;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.04);
+    }
+    .form-section h4 {
+        color: #2c3e50;
+        font-weight: 800;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 1.15rem;
+    }
+    .form-section h4 i {
+        color: #667eea;
+        font-size: 1.2em;
+    }
+    .form-label {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        font-size: 1.05rem;
+        transition: all 0.3s cubic-bezier(.39,.575,.56,1.000);
+        background: #fff;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #764ba2;
+        box-shadow: 0 0 0 0.15rem rgba(118,75,162,0.10);
+    }
+    .image-preview {
+        border: 2.5px dashed #dee2e6;
+        border-radius: 50%;
+        padding: 1.2rem;
+        text-align: center;
+        background: #f8f9fa;
+        width: 140px;
+        height: 140px;
+        margin: 0 auto 1rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+    }
+    .image-preview img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 4px 18px rgba(102,126,234,0.13);
+        transition: transform 0.3s cubic-bezier(.39,.575,.56,1.000);
+    }
+    .image-preview img:hover {
+        transform: scale(1.07) rotate(-2deg);
+        box-shadow: 0 8px 32px rgba(102,126,234,0.18);
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 20px;
+        padding: 0.9rem 2rem;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: all 0.3s cubic-bezier(.39,.575,.56,1.000);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.13);
+        letter-spacing: 0.5px;
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.18);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    }
+    .btn-secondary {
+        background: #6c757d;
+        border: none;
+        border-radius: 20px;
+        padding: 0.8rem 1.7rem;
+        font-weight: 700;
+        font-size: 1.02rem;
+        transition: all 0.3s cubic-bezier(.39,.575,.56,1.000);
+    }
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-1px) scale(1.03);
+    }
+    .stats-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        text-align: center;
+    }
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #667eea;
+        margin-bottom: 0.5rem;
+    }
+    .stats-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+    @media (max-width: 900px) {
+        .edit-store-body { padding: 1rem 0.5rem; }
+        .edit-store-card { max-width: 98vw; }
+    }
+    @media (max-width: 600px) {
+        .edit-store-header h2 { font-size: 1.2rem; }
+        .edit-store-body { padding: 0.5rem 0.2rem; }
+        .form-section { padding: 0.7rem; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-store-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="edit-store-card">
+                    <div class="edit-store-header">
+                        <h2><i class="fas fa-store me-3"></i>تعديل المتجر</h2>
+                        <p>قم بتحديث معلومات المتجر وإعداداته</p>
+                    </div>
+                    <div class="edit-store-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="d-flex flex-column align-items-center mb-4">
+                                <div class="image-preview">
+                                    {% if store.image %}
+                                        <img src="{{ get_image_url(store.image, 'store') }}" alt="صورة المتجر" onerror="this.src='/static/images/default_store.jpg'">
+                                    {% else %}
+                                        <img src="/static/images/default_store.jpg" alt="صورة المتجر">
+                                    {% endif %}
+                                </div>
+                                <label class="btn btn-secondary mt-2" style="border-radius: 20px;">
+                                    <i class="fas fa-upload me-1"></i> تغيير الصورة
+                                    <input type="file" name="image" accept="image/*" hidden>
+                                </label>
+                            </div>
+                            <div class="form-section">
+                                <h4><i class="fas fa-info-circle"></i>المعلومات الأساسية</h4>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">اسم المتجر</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ store.name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">الوصف</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required>{{ store.description }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">العنوان</label>
+                                    <input type="text" class="form-control" id="address" name="address" value="{{ store.address }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">القسم</label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        {% for category in categories %}
+                                            <option value="{{ category.name }}" {% if store.category == category.name %}selected{% endif %}>{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" {% if store.is_featured %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_featured">متجر مميز</label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> حفظ التغييرات</button>
+                                <a href="{{ url_for('admin_stores') }}" class="btn btn-secondary"><i class="fas fa-times me-1"></i> إلغاء</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

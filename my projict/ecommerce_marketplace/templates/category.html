@@ -1,0 +1,507 @@
+{% extends "shared/base.html" %}
+
+{% block title %}{{ category.name }} - الأقسام{% endblock %}
+
+{% block styles %}
+<style>
+    .category-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .category-header {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .category-icon {
+        width: 100px;
+        height: 100px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .category-icon i {
+        font-size: 3rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .category-title {
+        color: white;
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .category-description {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .category-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-number {
+        color: white;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+    }
+
+    .stores-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+        margin-bottom: 4rem;
+    }
+
+    .store-card {
+        background: white;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .store-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .store-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .store-card:hover .store-image {
+        transform: scale(1.1);
+    }
+
+    .store-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 25px;
+    }
+
+    .store-card:hover .store-overlay {
+        opacity: 1;
+    }
+
+    .overlay-text {
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .store-info {
+        padding: 2rem;
+        position: relative;
+    }
+
+    .store-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1rem;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        position: absolute;
+        top: -20px;
+        right: 2rem;
+        z-index: 2;
+    }
+
+    .store-name {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+
+    .store-description {
+        color: #7f8c8d;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        font-size: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .store-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .store-rating {
+        color: #f39c12;
+        font-size: 1.1rem;
+    }
+
+    .store-rating i {
+        margin-right: 2px;
+    }
+
+    .store-products-count {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .store-address {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .store-address i {
+        color: #667eea;
+    }
+
+    .btn-visit-store {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1rem;
+        border-radius: 15px;
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: block;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-visit-store:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        text-decoration: none;
+        color: white;
+    }
+
+    .empty-stores {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-stores i {
+        font-size: 5rem;
+        color: #95a5a6;
+        margin-bottom: 2rem;
+        opacity: 0.7;
+    }
+
+    .empty-stores h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+
+    .empty-stores p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        text-decoration: none;
+        color: white;
+        display: inline-block;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        text-decoration: none;
+        color: white;
+    }
+
+    .breadcrumb-nav {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        display: inline-block;
+    }
+
+    .breadcrumb-nav a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb-nav a:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+    .breadcrumb-nav i {
+        margin: 0 0.5rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    @media (max-width: 768px) {
+        .category-title {
+            font-size: 2rem;
+        }
+
+        .category-stats {
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .stores-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .store-info {
+            padding: 1.5rem;
+        }
+
+        .category-hero {
+            padding: 3rem 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="category-hero">
+    <div class="container">
+        <div class="category-header">
+            <div class="breadcrumb-nav">
+                <a href="{{ url_for('home') }}">
+                    <i class="fas fa-home"></i>الرئيسية
+                </a>
+                <i class="fas fa-chevron-left"></i>
+                <span style="color: white;">{{ category.name }}</span>
+            </div>
+            
+            <div class="category-icon">
+                <i class="fas {{ category.icon }}"></i>
+            </div>
+            
+            <h1 class="category-title">{{ category.name }}</h1>
+            <p class="category-description">{{ category.description }}</p>
+            
+            <div class="category-stats">
+                <div class="stat-item">
+                    <div class="stat-number">{{ stores|length }}</div>
+                    <div class="stat-label">متجر</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stores|length * 15 }}</div>
+                    <div class="stat-label">منتج</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">تقييم متوسط</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <section>
+        <h2 class="section-title">متاجر {{ category.name }}</h2>
+        
+        {% if stores %}
+        <div class="stores-grid">
+        {% for store in stores %}
+            <div class="store-card" data-store-url="{{ url_for('store', store_id=store._id) }}">
+                {% if store.image %}
+                <img src="{{ get_image_url(store.image, 'store') }}" 
+                     class="store-image" 
+                     alt="{{ store.name }}"
+                     onerror="this.src='{{ url_for('static', filename='images/default_store.jpg') }}'">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/default_store.jpg') }}" 
+                     class="store-image" 
+                     alt="{{ store.name }}">
+                {% endif %}
+                
+                <div class="store-overlay">
+                    <div class="overlay-text">
+                        <i class="fas fa-store me-2"></i>زيارة المتجر
+                    </div>
+                </div>
+                
+                <div class="store-info">
+                    <span class="store-badge">
+                        <i class="fas fa-store me-1"></i>متجر
+                    </span>
+                    
+                    <h3 class="store-name">{{ store.name }}</h3>
+                    <p class="store-description">{{ store.description }}</p>
+                    
+                    <div class="store-meta">
+                        <div class="store-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="ms-2 text-muted">(4.5)</span>
+                        </div>
+                        <div class="store-products-count">
+                            <i class="fas fa-box me-1"></i>
+                            {{ store.products_count if store.products_count else 15 }} منتج
+                        </div>
+                    </div>
+                    
+                    <div class="store-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ store.address }}
+                    </div>
+                    
+                    <a href="{{ url_for('store', store_id=store._id) }}" class="btn-visit-store">
+                        <i class="fas fa-store me-2"></i>زيارة المتجر
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-stores">
+            <i class="fas fa-store"></i>
+            <h3>لا توجد متاجر في هذا القسم</h3>
+            <p>عذراً، لا توجد متاجر متاحة حالياً في قسم {{ category.name }}. يرجى المحاولة لاحقاً أو تصفح الأقسام الأخرى.</p>
+            <a href="{{ url_for('home') }}" class="btn-primary">
+                <i class="fas fa-home me-2"></i>العودة للرئيسية
+            </a>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // تفعيل النقر على بطاقات المتاجر
+    document.querySelectorAll('.store-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // تجنب النقر إذا كان النقر على الرابط
+            if (e.target.tagName === 'A' || e.target.closest('a')) {
+                return;
+            }
+            
+            const url = this.dataset.storeUrl;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,540 @@
+{% extends "shared/base.html" %}
+
+{% block title %}{{ product.name }} - {{ store.name }}{% endblock %}
+
+{% block styles %}
+<style>
+    .product-hero {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .product-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 3rem;
+    }
+
+    .product-image-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .product-main-image {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-main-image:hover {
+        transform: scale(1.05);
+    }
+
+    .product-info-section {
+        padding: 3rem;
+    }
+
+    .product-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .product-price {
+        font-size: 2.5rem;
+        color: #e74c3c;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1.5rem;
+    }
+
+    .product-price::before {
+        content: 'ريال ';
+        font-size: 1.5rem;
+        color: #7f8c8d;
+        font-weight: 600;
+    }
+
+    .product-description {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+
+    .product-meta {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #7f8c8d;
+        font-size: 1rem;
+    }
+
+    .meta-item i {
+        color: #3498db;
+        font-size: 1.2rem;
+    }
+
+    .size-options, .color-options {
+        margin-bottom: 2rem;
+    }
+
+    .options-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .option-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .option-btn {
+        padding: 0.8rem 1.5rem;
+        border: 2px solid #e9ecef;
+        border-radius: 25px;
+        background: white;
+        color: #7f8c8d;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .option-btn:hover, .option-btn.active {
+        border-color: #3498db;
+        background: #3498db;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .quantity-section {
+        margin-bottom: 2rem;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .quantity-btn {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #e9ecef;
+        border-radius: 50%;
+        background: white;
+        color: #7f8c8d;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .quantity-btn:hover {
+        border-color: #3498db;
+        color: #3498db;
+    }
+
+    .quantity-input {
+        width: 80px;
+        text-align: center;
+        border: 2px solid #e9ecef;
+        border-radius: 25px;
+        padding: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-add-cart {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-add-cart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-wishlist {
+        background: white;
+        color: #e74c3c;
+        border: 2px solid #e74c3c;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-wishlist:hover {
+        background: #e74c3c;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .store-info {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .store-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .store-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .store-details h4 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .store-rating {
+        color: #f39c12;
+        font-size: 1rem;
+    }
+
+    .store-description {
+        color: #7f8c8d;
+        line-height: 1.6;
+    }
+
+    .related-products {
+        margin-top: 3rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border-radius: 2px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 2rem;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .product-card-body {
+        padding: 1.5rem;
+    }
+
+    .product-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-card-price {
+        font-size: 1.2rem;
+        color: #e74c3c;
+        font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+        .product-title {
+            font-size: 2rem;
+        }
+        
+        .product-price {
+            font-size: 2rem;
+        }
+        
+        .product-info-section {
+            padding: 2rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .product-meta {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="product-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}">الرئيسية</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('store', store_id=store._id) }}">{{ store.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container">
+    <div class="product-container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="product-image-section">
+                    {% if product.image %}
+                    <img src="{{ get_image_url(product.image, 'product') }}" 
+                         alt="{{ product.name }}" 
+                         class="product-main-image"
+                         onerror="this.src='{{ url_for('static', filename='images/default_product.jpg') }}'">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_product.jpg') }}" 
+                         alt="{{ product.name }}" 
+                         class="product-main-image">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="product-info-section">
+                    <h1 class="product-title">{{ product.name }}</h1>
+                    <div class="product-price">{{ product.price }}</div>
+                    <p class="product-description">{{ product.description }}</p>
+                    
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>{{ product.sales if product.sales else 0 }} مبيعات</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>متوفر</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-store"></i>
+                            <span>{{ store.name }}</span>
+                        </div>
+                    </div>
+
+                    {% if product.clothes_sizes %}
+                    <div class="size-options">
+                        <h4 class="options-title">اختر الحجم:</h4>
+                        <div class="option-buttons">
+                            {% for size in product.clothes_sizes %}
+                            <button class="option-btn" data-type="size" data-value="{{ size }}">{{ size }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if product.pants_sizes %}
+                    <div class="size-options">
+                        <h4 class="options-title">اختر الحجم:</h4>
+                        <div class="option-buttons">
+                            {% for size in product.pants_sizes %}
+                            <button class="option-btn" data-type="size" data-value="{{ size }}">{{ size }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if product.colors %}
+                    <div class="color-options">
+                        <h4 class="options-title">اختر اللون:</h4>
+                        <div class="option-buttons">
+                            {% for color in product.colors %}
+                            <button class="option-btn" data-type="color" data-value="{{ color }}">{{ color }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="quantity-section">
+                        <h4 class="options-title">الكمية:</h4>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                            <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="99">
+                            <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-add-cart" onclick="addToCart()">
+                            <i class="fas fa-shopping-cart me-2"></i>إضافة إلى السلة
+                        </button>
+                        <button class="btn-wishlist" onclick="addToWishlist()">
+                            <i class="fas fa-heart me-2"></i>المفضلة
+                        </button>
+                    </div>
+
+                    <div class="store-info">
+                        <div class="store-header">
+                            {% if store.image %}
+                            <img src="{{ get_image_url(store.image, 'store') }}" 
+                                 alt="{{ store.name }}" 
+                                 class="store-logo"
+                                 onerror="this.src='{{ url_for('static', filename='images/default_store.jpg') }}'">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='images/default_store.jpg') }}" 
+                                 alt="{{ store.name }}" 
+                                 class="store-logo">
+                            {% endif %}
+                            <div class="store-details">
+                                <h4>{{ store.name }}</h4>
+                                <div class="store-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="ms-2">(4.5)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="store-description">{{ store.description }}</p>
+                        <a href="{{ url_for('store', store_id=store._id) }}" class="btn btn-primary">
+                            <i class="fas fa-store me-2"></i>زيارة المتجر
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let selectedSize = null;
+let selectedColor = null;
+
+// تفعيل اختيار الحجم واللون
+document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const type = this.dataset.type;
+        const value = this.dataset.value;
+        
+        // إزالة التحديد من جميع الأزرار من نفس النوع
+        document.querySelectorAll(`[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+        
+        // تحديد الزر المختار
+        this.classList.add('active');
+        
+        if (type === 'size') {
+            selectedSize = value;
+        } else if (type === 'color') {
+            selectedColor = value;
+        }
+    });
+});
+
+// تغيير الكمية
+function changeQuantity(delta) {
+    const input = document.getElementById('quantity');
+    const newValue = Math.max(1, Math.min(99, parseInt(input.value) + delta));
+    input.value = newValue;
+}
+
+// إضافة إلى السلة
+function addToCart() {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    
+    fetch(`/cart/add/{{ product._id }}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            quantity: quantity,
+            size: selectedSize,
+            color: selectedColor
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('تم إضافة المنتج إلى السلة بنجاح!');
+        } else {
+            alert('حدث خطأ أثناء إضافة المنتج إلى السلة');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء إضافة المنتج إلى السلة');
+    });
+}
+
+// إضافة إلى المفضلة
+function addToWishlist() {
+    alert('سيتم إضافة هذه الميزة قريباً!');
+}
+</script>
+{% endblock %} 

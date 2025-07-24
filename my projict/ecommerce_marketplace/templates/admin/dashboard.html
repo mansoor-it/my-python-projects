@@ -1,0 +1,395 @@
+{% extends "shared/base.html" %}
+
+{% block title %}لوحة تحكم المشرف{% endblock %}
+
+{% block styles %}
+<style>
+    .admin-dashboard {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+
+    .dashboard-header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dashboard-title {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .dashboard-subtitle {
+        color: #7f8c8d;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #7f8c8d;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .stat-card.users .stat-icon { color: #3498db; }
+    .stat-card.stores .stat-icon { color: #e74c3c; }
+    .stat-card.products .stat-icon { color: #f39c12; }
+    .stat-card.orders .stat-icon { color: #27ae60; }
+
+    .recent-section {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .section-title {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: #667eea;
+    }
+
+    .recent-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .recent-item {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s ease;
+    }
+
+    .recent-item:hover {
+        transform: translateX(5px);
+    }
+
+    .recent-item-title {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+
+    .recent-item-details {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .admin-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .action-btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .action-btn i {
+        font-size: 1.2rem;
+    }
+
+    .welcome-message {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .welcome-message h3 {
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .welcome-message p {
+        margin-bottom: 0;
+        opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-title {
+            font-size: 2rem;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-card {
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+        }
+        
+        .recent-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="container">
+        <!-- رسالة الترحيب -->
+        <div class="welcome-message">
+            <h3>مرحباً بك في لوحة تحكم المشرف</h3>
+            <p>إدارة شاملة لمنصة التجارة الإلكترونية</p>
+                            </div>
+
+        <!-- العنوان الرئيسي -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">لوحة تحكم المشرف</h1>
+            <p class="dashboard-subtitle">إحصائيات شاملة وإدارة النظام</p>
+                        </div>
+
+        <!-- الإحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card users">
+                <i class="fas fa-users stat-icon"></i>
+                <div class="stat-number">{{ total_users }}</div>
+                <div class="stat-label">إجمالي المستخدمين</div>
+            </div>
+            
+            <div class="stat-card stores">
+                <i class="fas fa-store stat-icon"></i>
+                <div class="stat-number">{{ total_stores }}</div>
+                <div class="stat-label">إجمالي المتاجر</div>
+            </div>
+            
+            <div class="stat-card products">
+                <i class="fas fa-box stat-icon"></i>
+                <div class="stat-number">{{ total_products }}</div>
+                <div class="stat-label">إجمالي المنتجات</div>
+            </div>
+            
+            <div class="stat-card orders">
+                <i class="fas fa-shopping-cart stat-icon"></i>
+                <div class="stat-number">{{ total_orders }}</div>
+                <div class="stat-label">إجمالي الطلبات</div>
+            </div>
+        </div>
+
+        <!-- الأقسام الحديثة -->
+        <div class="recent-section">
+            <h2 class="section-title">
+                <i class="fas fa-clock"></i>
+                آخر النشاطات
+            </h2>
+            
+            <div class="recent-grid">
+        <!-- آخر المتاجر -->
+                <div class="recent-item">
+                    <div class="recent-item-title">
+                        <i class="fas fa-store text-primary"></i>
+                        آخر المتاجر المضافة
+                    </div>
+                    {% if recent_stores %}
+                        {% for store in recent_stores[:3] %}
+                        <div class="recent-item-details">
+                            <strong>{{ store.name }}</strong> - {{ store.created_at.strftime('%Y-%m-%d') if store.created_at else 'غير محدد' }}
+                                        </div>
+                                {% endfor %}
+                    {% else %}
+                        <div class="recent-item-details">لا توجد متاجر حديثة</div>
+                    {% endif %}
+        </div>
+
+        <!-- آخر المنتجات -->
+                <div class="recent-item">
+                    <div class="recent-item-title">
+                        <i class="fas fa-box text-warning"></i>
+                        آخر المنتجات المضافة
+                    </div>
+                    {% if recent_products %}
+                        {% for product in recent_products[:3] %}
+                        <div class="recent-item-details">
+                            <strong>{{ product.name }}</strong> - {{ product.created_at.strftime('%Y-%m-%d') if product.created_at else 'غير محدد' }}
+                                        </div>
+                                {% endfor %}
+                    {% else %}
+                        <div class="recent-item-details">لا توجد منتجات حديثة</div>
+                    {% endif %}
+        </div>
+
+        <!-- آخر المستخدمين -->
+                <div class="recent-item">
+                    <div class="recent-item-title">
+                        <i class="fas fa-user text-info"></i>
+                        آخر المستخدمين المسجلين
+                    </div>
+                    {% if recent_users %}
+                        {% for user in recent_users[:3] %}
+                        <div class="recent-item-details">
+                            <strong>{{ user.name }}</strong> - {{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'غير محدد' }}
+                                        </div>
+                                {% endfor %}
+                    {% else %}
+                        <div class="recent-item-details">لا يوجد مستخدمين جدد</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- أزرار الإدارة -->
+        <div class="admin-actions">
+            <a href="{{ url_for('admin_stores') }}" class="action-btn">
+                <i class="fas fa-store"></i>
+                إدارة المتاجر
+            </a>
+            
+            <a href="{{ url_for('admin_products') }}" class="action-btn">
+                <i class="fas fa-box"></i>
+                إدارة المنتجات
+            </a>
+            
+            <a href="{{ url_for('admin_users') }}" class="action-btn">
+                <i class="fas fa-users"></i>
+                إدارة المستخدمين
+            </a>
+            
+            <a href="{{ url_for('admin_orders') }}" class="action-btn">
+                <i class="fas fa-shopping-cart"></i>
+                إدارة الطلبات
+            </a>
+            
+            <a href="{{ url_for('admin_categories') }}" class="action-btn">
+                <i class="fas fa-tags"></i>
+                إدارة الأقسام
+            </a>
+            
+            <a href="{{ url_for('admin_analytics') }}" class="action-btn">
+                <i class="fas fa-chart-bar"></i>
+                الإحصائيات التفصيلية
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// إضافة تأثيرات تفاعلية
+document.addEventListener('DOMContentLoaded', function() {
+    // تأثير ظهور البطاقات تدريجياً
+    const cards = document.querySelectorAll('.stat-card, .recent-item');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+
+    // تأثير النقر على البطاقات
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+});
+</script>
+{% endblock %} 

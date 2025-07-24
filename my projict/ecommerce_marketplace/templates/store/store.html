@@ -1,0 +1,461 @@
+{% extends "shared/base.html" %}
+
+{% block title %}{{ store.name }} - متجرنا{% endblock %}
+
+{% block styles %}
+<style>
+    .store-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .store-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("{{ get_image_url(store.image, 'store') if store.image else url_for('static', filename='images/default_store.jpg') }}") no-repeat center center;
+        background-size: cover;
+        opacity: 0.2;
+    }
+
+    .store-hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .store-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .store-logo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .store-info h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .store-description {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .store-meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .meta-item i {
+        font-size: 1.2rem;
+    }
+
+    .store-stats {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-bottom: 3rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #3498db;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #7f8c8d;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.05);
+    }
+
+    .product-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(41, 128, 185, 0.9));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 20px;
+    }
+
+    .product-card:hover .product-overlay {
+        opacity: 1;
+    }
+
+    .overlay-text {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .product-info {
+        padding: 1.8rem;
+        position: relative;
+    }
+
+    .product-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.8rem;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        color: #e74c3c;
+        font-weight: 800;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+
+    .product-price::before {
+        content: 'ريال ';
+        font-size: 1rem;
+        color: #7f8c8d;
+        font-weight: 600;
+    }
+
+    .product-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .product-sales {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .product-status {
+        color: #27ae60;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-state i {
+        font-size: 5rem;
+        color: #95a5a6;
+        margin-bottom: 1.5rem;
+        opacity: 0.7;
+    }
+
+    .empty-state h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .empty-state p {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    }
+
+    @media (max-width: 768px) {
+        .store-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .store-info h1 {
+            font-size: 2rem;
+        }
+
+        .store-description {
+            font-size: 1rem;
+        }
+
+        .store-meta {
+            justify-content: center;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- قسم البداية للمتجر -->
+<section class="store-hero">
+    <div class="container">
+        <div class="store-hero-content">
+            <div class="store-header">
+                {% if store.image %}
+                <img src="{{ get_image_url(store.image, 'store') }}" 
+                     alt="{{ store.name }}" 
+                     class="store-logo"
+                     onerror="this.src='{{ url_for('static', filename='images/default_store.jpg') }}'">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/default_store.jpg') }}" 
+                     alt="{{ store.name }}" 
+                     class="store-logo">
+                {% endif %}
+                <div class="store-info">
+                    <h1>{{ store.name }}</h1>
+                    <p class="store-description">{{ store.description }}</p>
+                    <div class="store-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ store.address }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-tag"></i>
+                            <span>{{ category.name if category else 'غير محدد' }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>4.5 (120 تقييم)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- إحصائيات المتجر -->
+    <div class="store-stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">{{ products|length }}</div>
+                <div class="stat-label">المنتجات</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">120</div>
+                <div class="stat-label">التقييمات</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4.5</div>
+                <div class="stat-label">متوسط التقييم</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">المبيعات</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- المنتجات -->
+    <section>
+        <h2 class="section-title">منتجات المتجر</h2>
+        
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card" data-product-url="{{ url_for('product_details', product_id=product._id) }}">
+                {% if product.image %}
+                <img src="{{ get_image_url(product.image, 'product') }}" 
+                     class="product-image" 
+                     alt="{{ product.name }}"
+                     onerror="this.src='{{ url_for('static', filename='images/default_product.jpg') }}'">
+                {% else %}
+                <img src="{{ url_for('static', filename='images/default_product.jpg') }}" 
+                     class="product-image" 
+                     alt="{{ product.name }}">
+                {% endif %}
+                <div class="product-overlay">
+                    <div class="overlay-text">
+                        <i class="fas fa-eye me-2"></i>عرض التفاصيل
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <div class="product-price">{{ product.price }}</div>
+                    <div class="product-meta">
+                        <small class="product-sales">
+                            <i class="fas fa-shopping-cart me-1"></i>
+                            {{ product.sales if product.sales else 0 }} مبيعات
+                        </small>
+                        <small class="product-status">
+                            <i class="fas fa-check-circle me-1"></i>
+                            متوفر
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <h3>لا توجد منتجات حالياً</h3>
+            <p>لم يتم إضافة أي منتجات إلى هذا المتجر بعد</p>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // تفعيل النقر على بطاقات المنتجات
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const url = this.dataset.productUrl;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,604 @@
+{% extends "shared/base.html" %}
+
+{% block title %}إتمام الشراء{% endblock %}
+
+{% block styles %}
+<style>
+    .checkout-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .checkout-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .checkout-header {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .checkout-icon {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .checkout-icon i {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .checkout-title {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .checkout-subtitle {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+    }
+
+    .checkout-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .checkout-form {
+        background: white;
+        border-radius: 25px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .form-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.8rem;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control::placeholder {
+        color: #95a5a6;
+    }
+
+    .payment-methods {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .payment-method {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .payment-method input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .payment-method-label {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .payment-method input[type="radio"]:checked + .payment-method-label {
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .payment-method-label i {
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        color: #667eea;
+    }
+
+    .transfer-upload {
+        margin-top: 1rem;
+        padding: 1.5rem;
+        border: 2px dashed #e9ecef;
+        border-radius: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .transfer-upload:hover {
+        border-color: #667eea;
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    .transfer-upload i {
+        font-size: 2rem;
+        color: #95a5a6;
+        margin-bottom: 1rem;
+    }
+
+    .order-summary {
+        background: white;
+        border-radius: 25px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+    }
+
+    .summary-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .cart-items {
+        margin-bottom: 2rem;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-right: 1rem;
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.3rem;
+        font-size: 0.95rem;
+    }
+
+    .item-meta {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .item-price {
+        font-weight: 700;
+        color: #e74c3c;
+        font-size: 1rem;
+    }
+
+    .item-quantity {
+        background: #f8f9fa;
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        margin-left: 1rem;
+    }
+
+    .summary-totals {
+        border-top: 2px solid #e9ecef;
+        padding-top: 1.5rem;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    .total-row.final {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        border-top: 1px solid #e9ecef;
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+
+    .btn-complete-order {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1.2rem;
+        border-radius: 15px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        margin-top: 1.5rem;
+    }
+
+    .btn-complete-order::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn-complete-order:hover::before {
+        left: 100%;
+    }
+
+    .btn-complete-order:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-complete-order:active {
+        transform: translateY(-1px);
+    }
+
+    .breadcrumb-nav {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        display: inline-block;
+    }
+
+    .breadcrumb-nav a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb-nav a:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+    .breadcrumb-nav i {
+        margin: 0 0.5rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .payment-methods {
+            grid-template-columns: 1fr;
+        }
+
+        .checkout-form,
+        .order-summary {
+            padding: 2rem;
+        }
+
+        .checkout-title {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-hero">
+    <div class="container">
+        <div class="checkout-header">
+            <div class="breadcrumb-nav">
+                <a href="{{ url_for('home') }}">
+                    <i class="fas fa-home"></i>الرئيسية
+                </a>
+                <i class="fas fa-chevron-left"></i>
+                <a href="{{ url_for('cart') }}">
+                    <i class="fas fa-shopping-cart"></i>السلة
+                </a>
+                <i class="fas fa-chevron-left"></i>
+                <span style="color: white;">إتمام الشراء</span>
+            </div>
+            
+            <div class="checkout-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            
+            <h1 class="checkout-title">إتمام الشراء</h1>
+            <p class="checkout-subtitle">أكمل طلبك واختر طريقة الدفع المناسبة</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <form method="POST" action="{{ url_for('process_order') }}" enctype="multipart/form-data">
+                <!-- معلومات التوصيل -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-shipping-fast me-2"></i>معلومات التوصيل
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name" class="form-label">الاسم الكامل</label>
+                            <input type="text" 
+                                   id="name" 
+                                   name="name" 
+                                   class="form-control" 
+                                   placeholder="أدخل اسمك الكامل"
+                                   required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">رقم الهاتف</label>
+                            <input type="tel" 
+                                   id="phone" 
+                                   name="phone" 
+                                   class="form-control" 
+                                   placeholder="أدخل رقم هاتفك"
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="address" class="form-label">عنوان التوصيل</label>
+                        <textarea id="address" 
+                                  name="address" 
+                                  class="form-control" 
+                                  rows="3"
+                                  placeholder="أدخل عنوان التوصيل الكامل"
+                                  required></textarea>
+                    </div>
+                </div>
+
+                <!-- طريقة الدفع -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-credit-card me-2"></i>طريقة الدفع
+                    </h3>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <input type="radio" id="cash" name="payment_method" value="cash" checked>
+                            <label for="cash" class="payment-method-label">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <div>
+                                    <div style="font-weight: 600;">الدفع عند الاستلام</div>
+                                    <small style="color: #7f8c8d;">ادفع عند استلام الطلب</small>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="payment-method">
+                            <input type="radio" id="bank" name="payment_method" value="bank">
+                            <label for="bank" class="payment-method-label">
+                                <i class="fas fa-university"></i>
+                                <div>
+                                    <div style="font-weight: 600;">التحويل البنكي</div>
+                                    <small style="color: #7f8c8d;">تحويل مباشر للبنك</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- قسم إشعار التحويل -->
+                    <div id="transfer-section" style="display: none;">
+                        <div class="transfer-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h4>إرفاق إشعار التحويل</h4>
+                            <p style="color: #7f8c8d; margin-bottom: 1rem;">
+                                قم برفع صورة إشعار التحويل البنكي
+                            </p>
+                            <input type="file" 
+                                   name="transfer_image" 
+                                   accept="image/*"
+                                   class="form-control"
+                                   style="border: none; background: transparent;">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-complete-order">
+                    <i class="fas fa-check me-2"></i>إتمام الطلب
+                </button>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <h3 class="summary-title">ملخص الطلب</h3>
+            
+            <div class="cart-items">
+                {% for item in cart_items %}
+                <div class="cart-item">
+                    {% if item.image_url %}
+                    <img src="{{ item.image_url }}" 
+                         alt="{{ item.name }}" 
+                         class="item-image"
+                         onerror="this.src='{{ url_for('static', filename='images/default_product.jpg') }}'">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='images/default_product.jpg') }}" 
+                         alt="{{ item.name }}" 
+                         class="item-image">
+                    {% endif %}
+                    
+                    <div class="item-details">
+                        <div class="item-name">{{ item.name }}</div>
+                        <div class="item-meta">
+                            <i class="fas fa-store me-1"></i>{{ item.store_name }}
+                            {% if item.size %}<span class="ms-2">| الحجم: {{ item.size }}</span>{% endif %}
+                            {% if item.color %}<span class="ms-2">| اللون: {{ item.color }}</span>{% endif %}
+                        </div>
+                        <div class="item-price">{{ item.price }} ريال</div>
+                    </div>
+                    
+                    <div class="item-quantity">
+                        الكمية: {{ item.quantity }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="summary-totals">
+                <div class="total-row">
+                    <span>عدد المنتجات:</span>
+                    <span>{{ cart_items|length }}</span>
+                </div>
+                <div class="total-row">
+                    <span>إجمالي الكمية:</span>
+                    <span>{{ cart_items|sum(attribute='quantity') }}</span>
+                </div>
+                <div class="total-row final">
+                    <span>المجموع الكلي:</span>
+                    <span>{{ total }} ريال</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // تفعيل/إلغاء تفعيل قسم إشعار التحويل
+    const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+    const transferSection = document.getElementById('transfer-section');
+    
+    paymentMethods.forEach(method => {
+        method.addEventListener('change', function() {
+            if (this.value === 'bank') {
+                transferSection.style.display = 'block';
+            } else {
+                transferSection.style.display = 'none';
+            }
+        });
+    });
+
+    // تأثير النقر على الزر
+    const submitBtn = document.querySelector('.btn-complete-order');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function(e) {
+            // إضافة تأثير النقر
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        });
+    }
+});
+</script>
+{% endblock %} 

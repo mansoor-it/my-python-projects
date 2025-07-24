@@ -1,0 +1,198 @@
+/* ملف CSS خاص بالقائمة المنسدلة */
+
+/* إصلاح مشكلة z-index */
+.dropdown {
+    position: relative !important;
+    z-index: 9999 !important;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: 9999 !important;
+    background: white !important;
+    border: 1px solid rgba(0,0,0,.15) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem !important;
+    min-width: 220px !important;
+    margin-top: 0.5rem !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.2s ease !important;
+}
+
+.dropdown-menu.show {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    animation: dropdownFadeIn 0.2s ease-out !important;
+}
+
+/* إصلاح مشكلة RTL */
+.dropdown-menu-end {
+    right: 0 !important;
+    left: auto !important;
+}
+
+/* تنسيق العناصر */
+.dropdown-header {
+    color: #6c757d !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    padding: 0.5rem 1rem !important;
+    border-bottom: 1px solid #e9ecef !important;
+    margin-bottom: 0.5rem !important;
+    background: transparent !important;
+    display: block !important;
+}
+
+.dropdown-item {
+    color: #495057 !important;
+    background: transparent !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.95rem !important;
+    padding: 0.6rem 1rem !important;
+    transition: all 0.2s ease !important;
+    display: block !important;
+    width: 100% !important;
+    text-decoration: none !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+}
+
+.dropdown-item:hover {
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
+    transform: translateX(-3px) !important;
+    text-decoration: none !important;
+}
+
+.dropdown-item.text-danger {
+    color: #dc3545 !important;
+}
+
+.dropdown-item.text-danger:hover {
+    color: #721c24 !important;
+    background-color: #f8d7da !important;
+}
+
+.dropdown-item:active {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+.dropdown-item.text-danger:active {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.dropdown-item i {
+    width: 20px !important;
+    text-align: center !important;
+    margin-left: 0.5rem !important;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0 !important;
+    border-color: #e9ecef !important;
+    display: block !important;
+}
+
+/* تنسيق زر القائمة المنسدلة */
+.nav-link.dropdown-toggle {
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    z-index: 1001 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+}
+
+.nav-link.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-link.dropdown-toggle::after {
+    margin-right: 0.5rem !important;
+}
+
+/* أنيميشن */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* إصلاح مشكلة z-index للعناصر الأخرى */
+.container {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+main {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.navbar {
+    position: relative !important;
+    z-index: 1000 !important;
+}
+
+/* تأكد من أن القائمة المنسدلة تظهر فوق كل شيء */
+.user-dropdown {
+    position: relative !important;
+    z-index: 9999 !important;
+}
+
+/* إصلاح مشكلة الشفافية */
+.dropdown-menu {
+    background-color: white !important;
+    backdrop-filter: none !important;
+}
+
+/* إصلاح مشكلة العرض في الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: fixed !important;
+        top: 60px !important;
+        right: 10px !important;
+        left: 10px !important;
+        width: auto !important;
+        max-width: 300px !important;
+    }
+}
+
+/* إصلاح مشكلة عدم ظهور القائمة */
+.dropdown-menu.show {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+}
+
+/* تأكد من أن جميع العناصر مرئية */
+.dropdown-menu li {
+    display: block !important;
+    width: 100% !important;
+}
+
+.dropdown-menu ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+} 

@@ -1,0 +1,110 @@
+/* تنسيقات لوحة التحكم */
+
+/* تنسيق القائمة المنسدلة للحساب */
+.user-dropdown {
+    position: relative;
+}
+
+.user-dropdown .dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    min-width: 220px;
+    margin-top: 0.5rem;
+    background: white;
+}
+
+.user-dropdown .dropdown-header {
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 0.5rem;
+}
+
+.user-dropdown .dropdown-item {
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    transition: all 0.2s ease;
+    color: #495057;
+    display: flex;
+    align-items: center;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(-3px);
+    color: #212529;
+    text-decoration: none;
+}
+
+.user-dropdown .dropdown-item.text-danger:hover {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.user-dropdown .dropdown-item i {
+    width: 20px;
+    text-align: center;
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.user-dropdown .dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: #e9ecef;
+}
+
+/* تنسيق أيقونة المستخدم */
+.user-icon {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+}
+
+.user-name {
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+/* تحسين مظهر القائمة المنسدلة */
+.dropdown-menu.show {
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تنسيق الأزرار في القائمة */
+.dropdown-item:active {
+    background-color: #007bff;
+    color: white;
+}
+
+.dropdown-item.text-danger:active {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* تنسيق للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .user-dropdown .dropdown-menu {
+        min-width: 200px;
+        right: 0;
+        left: auto;
+    }
+    
+    .user-name {
+        display: none;
+    }
+} 

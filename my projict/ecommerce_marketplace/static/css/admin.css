@@ -1,0 +1,43 @@
+/* ملف CSS للإدارة - لحل مشاكل الـ linter */
+
+/* تنسيق شريط التقدم */
+.progress-fill-category {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.progress-fill-pending {
+    background: #f39c12;
+}
+
+.progress-fill-completed {
+    background: #27ae60;
+}
+
+.progress-fill-cancelled {
+    background: #e74c3c;
+}
+
+.progress-fill-admin {
+    background: #3498db;
+}
+
+.progress-fill-store {
+    background: #e74c3c;
+}
+
+.progress-fill-customer {
+    background: #f39c12;
+}
+
+/* تنسيق عرض الصور */
+.product-image-fallback {
+    background-image: url('../images/default_product.jpg');
+}
+
+.store-image-fallback {
+    background-image: url('../images/default_store.jpg');
+}
+
+.category-image-fallback {
+    background-image: url('../images/default_category.jpg');
+} 
