@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>محمد عبد القادر | الصفحة الرئيسية</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --main-color: #0072ff;
+            --dark-color: #005ec2;
+            --light-bg: #f4f4f4;
+            --text-color: #333;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--light-bg);
+            direction: rtl;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        header {
+            background: var(--main-color);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+        }
+
+        nav {
+            background: var(--dark-color);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 50px 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        section h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .about, .skills, .projects, .contact {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .skill {
+            background-color: var(--main-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .project {
+            background: #e8f0ff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px #aaa;
+        }
+
+        .project h3 {
+            color: var(--dark-color);
+            margin-top: 0;
+        }
+
+        .contact form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact label {
+            margin-top: 15px;
+        }
+
+        .contact input, .contact textarea {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .contact button {
+            margin-top: 20px;
+            background-color: var(--main-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact button:hover {
+            background-color: var(--dark-color);
+        }
+
+        footer {
+            background: var(--main-color);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>محمد عبد القادر</h1>
+        <p>مبرمج ومطور حلول رقمية</p>
+    </header>
+
+    <nav>
+        <a href="#about">عنّي</a>
+        <a href="#skills">المهارات</a>
+        <a href="#projects">المشاريع</a>
+        <a href="#contact">تواصل</a>
+    </nav>
+
+    <section id="about" class="about">
+        <h2>من أنا</h2>
+        <p>
+            أنا محمد عبد القادر، مبرمج ومطور مهتم بإنشاء تطبيقات الويب والهاتف، وتصميم الأنظمة الذكية باستخدام تقنيات مثل Python وFlutter وPHP وArduino.
+            أمتلك خبرة في تطوير واجهات المستخدم وربطها بقاعدة البيانات، بالإضافة إلى تطوير مشاريع تخرج عالية الجودة.
+        </p>
+    </section>
+
+    <section id="skills" class="skills">
+        <h2>مهاراتي</h2>
+        <div class="skills-list">
+            <div class="skill">Python</div>
+            <div class="skill">Flutter</div>
+            <div class="skill">PHP & MySQL</div>
+            <div class="skill">Arduino</div>
+            <div class="skill">HTML / CSS</div>
+            <div class="skill">تصميم قواعد البيانات</div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2>مشاريعي</h2>
+        <div class="projects-grid">
+            <div class="project">
+                <h3>تطبيق متجر متعدد التجار</h3>
+                <p>تطبيق Flutter كامل مع لوحة تحكم وربط MySQL وPHP.</p>
+            </div>
+            <div class="project">
+                <h3>خزنة ذكية باستخدام Arduino</h3>
+                <p>نظام حماية بكلمة مرور وحساس حركة ووزن وواجهة LCD.</p>
+            </div>
+            <div class="project">
+                <h3>نظام إدارة طلبات</h3>
+                <p>نظام ويب باستخدام Flask وMySQL لإدارة المستخدمين والطلبات والدفع.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>تواصل معي</h2>
+        <form method="POST" action="http://localhost/save_contact.php">
+            <label for="name">الاسم:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">البريد الإلكتروني:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">رسالتك:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">إرسال</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2025 محمد عبد القادر - جميع الحقوق محفوظة</p>
+    </footer>
+
+</body>
+</html>
